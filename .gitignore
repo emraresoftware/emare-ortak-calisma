@@ -10,6 +10,7 @@ __pycache__/
 .env
 .env.local
 .env.*.local
+.github_token
 
 # IDE
 .vscode/

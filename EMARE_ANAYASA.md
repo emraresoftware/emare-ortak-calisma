@@ -893,6 +893,192 @@ cp /emarecloud/DESIGN_GUIDE.md ./
 
 ---
 
+## Madde 18: Derviş Haberleşme Sistemi (ZORUNLU)
+
+**Dervişler GitHub Issues üzerinden haberleşir. Her derviş oturum açtığında mesajlarını kontrol etmelidir.**
+
+### 18.1. Sistem Nasıl Çalışır?
+
+Haberleşme sistemi `emare_messenger.py` modülünü kullanır. Mesajlar `emare-ortak-calisma` GitHub reposundaki Issue'lar olarak saklanır.
+
+```
+📦 Sistem Mimarisi:
+
+  [emarecloud]  ──mesaj──▶  GitHub Issues API  ◀──oku──  [emaresetup]
+  [emareai]     ──duyuru──▶  (emare-ortak-calisma repo)  ◀──yanıt──  [emareasistan]
+  [emareflow]   ──acil────▶  Label: dervis-mesaj, duyuru  ◀──oku──  [emarepos]
+                              Label: alici:X, gonderen:Y
+```
+
+### 18.2. Token Yapılandırması (ÖNEMLİ)
+
+Messenger'ın çalışması için `GITHUB_TOKEN` ortam değişkeni gereklidir:
+
+```bash
+# Terminal'de (geçici):
+export GITHUB_TOKEN="<token>"
+
+# Kalıcı (.zshrc veya .bashrc):
+echo 'export GITHUB_TOKEN="<token>"' >> ~/.zshrc
+
+# Proje .env dosyasında:
+GITHUB_TOKEN=<token>
+```
+
+**Token Dosyası:** `EMARE_ORTAK_CALISMA/.github_token` → Bu dosya .gitignore'da listelenir, token'ı buradan okuyun.
+
+```python
+# Token okuma (öncelik sırası):
+# 1. os.getenv("GITHUB_TOKEN")      ← Ortam değişkeni
+# 2. EMARE_ORTAK_CALISMA/.github_token  ← Dosya
+```
+
+### 18.3. Oturum Başlangıç Prosedürü (ZORUNLU)
+
+**Her derviş, oturum açtığında şu adımları takip eder:**
+
+```markdown
+🚀 DERVİŞ OTURUM BAŞLANGIÇ PROTOKOLÜ:
+
+1. ✅ Anayasa ve ortak hafızayı oku (Madde 1)
+2. ✅ Mesajlarını kontrol et:
+   
+   python emare_messenger.py <dervis_adi> oku
+   
+   Örnek: python emare_messenger.py emarecloud oku
+   
+3. ✅ Acil mesaj varsa → Önce onu çöz
+4. ✅ Duyuru varsa → Oku ve not al
+5. ✅ Normal görevine başla
+```
+
+### 18.4. Mesaj Gönderme
+
+```python
+from emare_messenger import EmareMesaj
+
+# Derviş nesnesi oluştur (kendi adınla)
+mesaj = EmareMesaj("emarecloud")
+
+# ── Birine mesaj gönder ──
+mesaj.gonder("emaresetup", "API v2 hazır, endpoint: /api/v2/users")
+
+# ── Herkese duyuru yap ──
+mesaj.gonder_herkese("Tüm servislerde CORS güncellendi, kontrol edin!")
+
+# ── Acil mesaj gönder ──
+mesaj.gonder("emareasistan", "Kritik bug: Auth servisi çöktü!", acil=True)
+```
+
+**CLI Kullanımı:**
+```bash
+# Birine mesaj gönder
+python emare_messenger.py emarecloud gonder emaresetup "API hazır"
+
+# Herkese duyuru
+python emare_messenger.py emarecloud herkese "v2.0 yayınlandı"
+
+# Acil duyuru
+python emare_messenger.py emarecloud herkese "KRİTİK: Veritabanı migration gerekiyor" --acil
+```
+
+### 18.5. Mesaj Okuma
+
+```python
+mesaj = EmareMesaj("emaresetup")
+
+# Gelen mesajları oku
+inbox = mesaj.oku()
+# Çıktı:
+#   📬 emaresetup — 3 mesaj:
+#   🔴 #12 | 2026-03-06 14:30 | 📨 [emarecloud] → [emaresetup]: Kritik bug...
+#      #11 | 2026-03-06 14:25 | 📨 [emareai] → [emaresetup]: Model güncellendi
+#      #10 | 2026-03-06 14:20 | 📢 [emareflow] → [HERKES]: Yeni workflow eklendi
+
+# Tüm açık mesajları listele
+mesaj.tum_mesajlar()
+```
+
+**CLI:**
+```bash
+python emare_messenger.py emaresetup oku      # Kendi mesajlarını oku
+python emare_messenger.py emaresetup tumu      # Tüm mesajları listele
+```
+
+### 18.6. Yanıt ve İşaretleme
+
+```python
+mesaj = EmareMesaj("emaresetup")
+
+# Bir mesaja yanıt ver
+mesaj.yanit(12, "Bug fix'lendi, PR #45 açıldı")
+
+# Mesajı okundu/tamamlandı olarak kapat
+mesaj.okundu(12)
+
+# Durumu güncelle
+mesaj.durum_guncelle(12, "tamamlandi")
+```
+
+**CLI:**
+```bash
+python emare_messenger.py emaresetup yanit 12 "Fix hazır"
+python emare_messenger.py emaresetup okundu 12
+```
+
+### 18.7. Ne Zaman Mesaj Gönderilmeli?
+
+| Durum | Komut | Öncelik |
+|-------|-------|---------|
+| API endpoint değişti | `gonder(etkilenen_dervis, ...)` | Normal |
+| Ortak modül güncellendi | `gonder_herkese(...)` | Normal |
+| Kritik bug bulundu | `gonder(ilgili_dervis, ..., acil=True)` | 🔴 Acil |
+| Database migration gerekiyor | `gonder_herkese(..., acil=True)` | 🔴 Acil |
+| Yeni servis deploy edildi | `gonder_herkese(...)` | Normal |
+| Başka dervişin API'sine ihtiyaç var | `gonder(o_dervis, ...)` | Normal |
+| Güvenlik açığı tespit edildi | `gonder_herkese(..., acil=True)` | 🔴 Acil |
+
+### 18.8. Mesaj Formatı Kuralları
+
+```markdown
+✅ İYİ MESAJ:
+"API v2 hazır. Endpoint: /api/v2/users. Breaking change: auth header artık Bearer token."
+
+❌ KÖTÜ MESAJ:
+"güncelleme yaptım"
+"bak şuna"
+
+📐 FORMAT:
+[Ne yapıldı]. [Detay/Endpoint/Versiyon]. [Etki/Breaking change varsa].
+```
+
+### 18.9. Etiket Sistemi
+
+| Etiket | Renk | Anlam |
+|--------|------|-------|
+| `dervis-mesaj` | 🔵 Mavi | Tüm derviş mesajları |
+| `duyuru` | 🟡 Sarı | Broadcast mesajlar |
+| `acil` | 🔴 Kırmızı | Acil/kritik mesajlar |
+| `gonderen:X` | Otomatik | Gönderen derviş |
+| `alici:X` | Otomatik | Alıcı derviş |
+| `durum:tamamlandi` | Otomatik | İş tamamlandı |
+
+### 18.10. Yaptırımlar
+
+**🟡 Sarı Kart:**
+- Oturum başında mesaj kontrolü yapılmamış
+- Mesaj formatı kurallara uymuyor
+
+**🟠 Turuncu Kart:**
+- API değişikliği yapılmış ama etkilenen dervişlere bildirilmemiş
+- Acil mesaja 1 saat içinde yanıt verilmemiş
+
+**🔴 Kırmızı Kart:**
+- Kritik güvenlik açığı bildirilmemiş
+- Breaking change duyurulmamış ve başka dervişlerin kodu bozulmuş
+
+---
+
 ## 📊 Anayasa Uyum Skoru
 
 Her AI için uyum skoru hesaplanır:
@@ -905,8 +1091,9 @@ Her AI için uyum skoru hesaplanır:
 | 4. Dokümantasyon | %12 | Zorunlu |
 | 5. Test Yazımı | %12 | Zorunlu |
 | 6. Güvenlik | %20 | Zorunlu (kritik) |
-| 7-16. Diğer Maddeler | %13 | Önerilen |
-| 17. Ortak Tasarım | %10 | Zorunlu |
+| 7-16. Diğer Maddeler | %10 | Önerilen |
+| 17. Ortak Tasarım | %8 | Zorunlu |
+| 18. Derviş Haberleşme | %5 | Zorunlu |
 
 **Minimum Puan:** %80 (anayasaya uyumlu)  
 **Hedef Puan:** %95+ (örnek AI)
@@ -1000,9 +1187,9 @@ Bu anayasa yaşayan bir dokümandır ve sürekli gelişir.
 3. Teknoloji stack'i değişince
 4. AI'lar konsensüsle karar verince
 
-**Son Güncelleme:** 4 Mart 2026  
-**Versiyon:** 1.0.0  
-**Katkıda Bulunanlar:** 21 AI kolektifi
+**Son Güncelleme:** 6 Mart 2026  
+**Versiyon:** 1.1.0  
+**Katkıda Bulunanlar:** 21 AI kolektifi + Derviş Haberleşme Sistemi
 
 ---
 

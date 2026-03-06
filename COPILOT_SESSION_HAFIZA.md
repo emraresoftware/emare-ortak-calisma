@@ -1,13 +1,46 @@
 # 🧠 Copilot Oturum Hafızası
-> Son güncelleme: 2026 — Phase 22  
-> Oturum: GitHub Copilot (Claude Sonnet 4.6)  
+> Son güncelleme: 6 Mart 2026 — Phase 23  
+> Oturum: GitHub Copilot (Claude Opus 4.6)  
 > Çalışma dizini: `/Users/emre/Desktop/Emare/`
 
 ---
 
 ## 📍 Şu An Neredeyiz?
 
-Emare ekosistemi **tam operasyonel + aktif genişleme** durumda. **48 proje** kayıtlı. 22 Dervişe otomatik çeyiz yapıldı. emaresuperapp web+mobile tamamlandı. Sosyal Medya Yönetim Aracı backend+frontend tamamen hazır.
+Emare ekosistemi **tam operasyonel + aktif genişleme** durumda. **48 proje** kayıtlı. 30 repo GitHub'da yayında. **Derviş Haberleşme Sistemi** aktif — tüm dervişler GitHub Issues üzerinden mesajlaşabiliyor.
+
+---
+
+## ✅ Phase 23 — GitHub & Haberleşme Sistemi
+
+### GitHub Deployment
+- 30 repo GitHub'da yayında (emraresoftware hesabı)
+- `github_push_all.py` ile toplu yükleme yapıldı
+- Copilot auto-approve ayarları 43 projeye + global settings'e eklendi
+
+### Derviş Haberleşme Sistemi (emare_messenger.py)
+- **GitHub Issues** tabanlı mesajlaşma (emare-ortak-calisma repo)
+- Fonksiyonlar: `gonder()`, `gonder_herkese()`, `oku()`, `yanit()`, `okundu()`
+- Etiket sistemi: `dervis-mesaj`, `duyuru`, `acil`, `alici:X`, `gonderen:Y`
+- Token: `~/.zshrc` + `EMARE_ORTAK_CALISMA/.github_token`
+- 41 projeye dağıtıldı (emare_messenger.py + .github/copilot-instructions.md)
+
+### Anayasa Güncelleme
+- **Madde 18: Derviş Haberleşme Sistemi** eklendi
+- Oturum başlangıç protokolü: mesaj kontrolü zorunlu
+- Versiyon: 1.0.0 → 1.1.0
+
+### Kullanım
+```bash
+# Mesaj oku
+python emare_messenger.py emarecloud oku
+
+# Birine gönder
+python emare_messenger.py emarecloud gonder emaresetup "API hazır"
+
+# Herkese duyuru
+python emare_messenger.py emarecloud herkese "Güncelleme yapıldı"
+```
 
 ---
 
@@ -87,7 +120,7 @@ Emare ekosistemi **tam operasyonel + aktif genişleme** durumda. **48 proje** ka
 - 7 proje tipi: `fastapi | flask | react | cli | fullstack | library | bos`
 - 16 adım → 40 dosya + 23 dizin / proje
 - **Koordinatör:** emarework Dervishi (`gorev_95c48b39e066` atandı)
-- **Pipeline:** emarework → EmareHup → emare code → emaresetup → emarekatip → emaregithup → emarecloud
+- **Pipeline:** emarework → EmareHup → emare code → emaresetup → emarekatip → emaregithub → emarecloud
 
 ### 5. emareapi Bildirimleri
 - `emareapi/Dervisler/emareapi Dervishi/gorev_kutusu/gelen/bildirim_ceyiz_sistemi.json`

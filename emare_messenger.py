@@ -27,7 +27,26 @@ import sys
 from datetime import datetime
 
 # ── Yapılandırma ──
-GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "")  # .env dosyasından veya ortam değişkeninden okunur
+def _load_token():
+    """Token'ı ortam değişkeni veya .github_token dosyasından oku."""
+    # 1. Ortam değişkeni
+    token = os.getenv("GITHUB_TOKEN", "")
+    if token:
+        return token
+    # 2. EMARE_ORTAK_CALISMA/.github_token dosyası
+    token_paths = [
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), ".github_token"),
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), "EMARE_ORTAK_CALISMA", ".github_token"),
+    ]
+    for path in token_paths:
+        if os.path.exists(path):
+            with open(path, "r") as f:
+                token = f.read().strip()
+                if token:
+                    return token
+    return ""
+
+GITHUB_TOKEN = _load_token()
 GITHUB_USER = os.getenv("GITHUB_USER", "emraresoftware")
 MSG_REPO = "emare-ortak-calisma"   # Haberleşme kanalı olarak kullanılan repo
 API_BASE = f"https://api.github.com/repos/{GITHUB_USER}/{MSG_REPO}"
