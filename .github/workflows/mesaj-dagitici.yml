@@ -1,0 +1,149 @@
+name: "Derviş Mesaj Dağıtıcı"
+
+# Yeni issue açıldığında tetikle (mesaj gönderildiğinde)
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  dagit:
+    name: "Mesajı Alıcıya İlet"
+    runs-on: ubuntu-latest
+    # Sadece dervis-mesaj etiketli issue'lar
+    if: contains(github.event.issue.labels.*.name, 'dervis-mesaj')
+
+    steps:
+      - name: Parse mesaj ve alıcı bul
+        id: parse
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const title = issue.title;
+            const labels = issue.labels.map(l => l.name);
+            
+            // Alıcı label'dan bul: "alici:emarecloud"
+            let alicilar = [];
+            const isBroadcast = labels.includes('duyuru');
+            
+            if (isBroadcast) {
+              // Tüm repo'lara gönder
+              alicilar = ['HERKES'];
+            } else {
+              // Spesifik alıcı
+              for (const l of labels) {
+                if (l.startsWith('alici:')) {
+                  alicilar.push(l.replace('alici:', ''));
+                }
+              }
+            }
+            
+            // Gönderen
+            let gonderen = '';
+            for (const l of labels) {
+              if (l.startsWith('gonderen:')) {
+                gonderen = l.replace('gonderen:', '');
+              }
+            }
+            
+            const isAcil = labels.includes('acil');
+            
+            core.setOutput('alicilar', JSON.stringify(alicilar));
+            core.setOutput('broadcast', isBroadcast.toString());
+            core.setOutput('gonderen', gonderen);
+            core.setOutput('acil', isAcil.toString());
+            core.setOutput('mesaj_no', issue.number.toString());
+            core.setOutput('baslik', title.substring(0, 100));
+            
+            console.log(`Gönderen: ${gonderen}`);
+            console.log(`Alıcılar: ${JSON.stringify(alicilar)}`);
+            console.log(`Broadcast: ${isBroadcast}`);
+            console.log(`Acil: ${isAcil}`);
+
+      - name: Repo listesini al (broadcast için)
+        id: repos
+        if: steps.parse.outputs.broadcast == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.EMARE_TOKEN }}
+          script: |
+            // emraresoftware'in tüm repo'larını al
+            const repos = await github.paginate(github.rest.repos.listForUser, {
+              username: 'emraresoftware',
+              per_page: 100
+            });
+            
+            // emare-ortak-calisma hariç
+            const repoNames = repos
+              .map(r => r.name)
+              .filter(n => n !== 'emare-ortak-calisma');
+            
+            core.setOutput('repo_list', JSON.stringify(repoNames));
+            console.log(`${repoNames.length} repo bulundu`);
+
+      - name: Dispatch - Broadcast (tüm repo'lara)
+        if: steps.parse.outputs.broadcast == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.EMARE_TOKEN }}
+          script: |
+            const repos = JSON.parse('${{ steps.repos.outputs.repo_list }}');
+            const gonderen = '${{ steps.parse.outputs.gonderen }}';
+            const mesajNo = '${{ steps.parse.outputs.mesaj_no }}';
+            const baslik = '${{ steps.parse.outputs.baslik }}';
+            const acil = '${{ steps.parse.outputs.acil }}' === 'true';
+            
+            let ok = 0, fail = 0;
+            for (const repo of repos) {
+              try {
+                await github.rest.repos.createDispatchEvent({
+                  owner: 'emraresoftware',
+                  repo: repo,
+                  event_type: 'emare-mesaj',
+                  client_payload: {
+                    gonderen: gonderen,
+                    mesaj_no: mesajNo,
+                    baslik: baslik,
+                    acil: acil,
+                    broadcast: true
+                  }
+                });
+                ok++;
+              } catch (e) {
+                // Workflow yoksa 404 döner, sorun değil
+                fail++;
+              }
+            }
+            console.log(`Dispatch: ${ok} başarılı, ${fail} hatalı`);
+
+      - name: Dispatch - Direkt mesaj (tek repo'ya)
+        if: steps.parse.outputs.broadcast == 'false'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.EMARE_TOKEN }}
+          script: |
+            const alicilar = JSON.parse('${{ steps.parse.outputs.alicilar }}');
+            const gonderen = '${{ steps.parse.outputs.gonderen }}';
+            const mesajNo = '${{ steps.parse.outputs.mesaj_no }}';
+            const baslik = '${{ steps.parse.outputs.baslik }}';
+            const acil = '${{ steps.parse.outputs.acil }}' === 'true';
+            
+            for (const alici of alicilar) {
+              try {
+                await github.rest.repos.createDispatchEvent({
+                  owner: 'emraresoftware',
+                  repo: alici,
+                  event_type: 'emare-mesaj',
+                  client_payload: {
+                    gonderen: gonderen,
+                    mesaj_no: mesajNo,
+                    baslik: baslik,
+                    acil: acil,
+                    broadcast: false
+                  }
+                });
+                console.log(`✅ Dispatch → ${alici}`);
+              } catch (e) {
+                console.log(`❌ Dispatch hatası → ${alici}: ${e.message}`);
+              }
+            }

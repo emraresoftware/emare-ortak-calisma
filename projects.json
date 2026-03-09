@@ -301,27 +301,29 @@
   },
   {
     "id": "yazilim-ekibi",
-    "name": "Hive Coordinator",
-    "icon": "👥",
+    "name": "Hive Coordinator (Emare Work)",
+    "icon": "🕌",
     "color": "#22c55e",
-    "description": "9 Milyar düğümlü hiyerarşik yazılım ekibi koordinasyon sistemi — 28/28 test geçti",
-    "status": "ready",
+    "description": "43 Yazılım Dervişi ile 9 Milyar düğümlü koordinasyon sistemi — Dergah Sohbet, Derviş Yetenekleri, 80+ API endpoint, 42 test geçti",
+    "status": "production",
     "tech": [
       "Python 3.11",
       "FastAPI",
       "PostgreSQL 16",
       "Redis 7",
       "Celery",
-      "SQLAlchemy"
+      "SQLAlchemy",
+      "Chart.js",
+      "Pydantic V2"
     ],
     "path": "/Users/emre/Desktop/Emare/emarework",
-    "memory_file": "/Users/emre/Desktop/Emare/emarework/hafıza.md",
+    "memory_file": "/Users/emre/Desktop/Emare/emarework/emarework hafıza.md",
     "server": null,
-    "local_start_cmd": "cd '/Users/emre/Desktop/Emare/emarework/koordinasyon-sistemi' && uvicorn src.api.main:app --reload --port=8001",
-    "local_port": 8001,
+    "local_start_cmd": "cd '/Users/emre/Desktop/Emare/emarework/koordinasyon-sistemi' && uvicorn src.api.main:app --reload --port=8000",
+    "local_port": 8000,
     "category": "Infrastructure",
-    "url": "http://127.0.0.1:8001",
-    "notes": []
+    "url": "http://127.0.0.1:8000",
+    "notes": ["Dergah Sohbet Odası aktif", "43 derviş detaylı yetenek profili", "Gelişmiş Dashboard + Analytics"]
   },
   {
     "id": "emare-team",

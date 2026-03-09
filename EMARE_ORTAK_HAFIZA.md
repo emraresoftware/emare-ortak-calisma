@@ -79,36 +79,68 @@ Kod yazmaya başlamadan önce **sırasıyla** oku:
 
 ## 2. Proje Envanteri
 
-| # | Proje | İkon | Durum | Kategori | Teknoloji | Yol |
-|---|-------|------|-------|----------|-----------|-----|
-| 1 | **Emare Asistan** | 🤖 | Production | SaaS Platform | FastAPI, Python, Gemini AI, WhatsApp Bridge, Docker | `/Users/emre/Desktop/Emare/emareasistan` |
-| 2 | **EmareCloud** | ☁️ | Production | Infrastructure | Flask, Python, SQLite, SocketIO, Paramiko, xterm.js | `/Users/emre/Desktop/Emare/emarecloud` |
-| 3 | **Emare Finance** | 💰 | Production | SaaS Platform | Laravel 12, PHP 8.4, MariaDB, Tailwind CSS, Alpine.js | `/Users/emre/Desktop/Emare/Emare Finance` |
-| 4 | **Emare POS / Adisyon** | 🍽️ | Development | POS | Laravel 12, PHP 8.2, SQLite, Alpine.js | `/Users/emre/Desktop/adisyon sistemi/pos-system` |
-| 5 | **EmareDesk** | 🖥️ | Ready | Tool | Python, WebSocket, Pillow, mss, pyautogui | `/Users/emre/Desktop/emare desk/remote-desktop` |
-| 6 | **EmareSetup** | 🏭 | Development | Infrastructure | Python, FastAPI, React 19, Gemini, OpenAI, SQLAlchemy | `/Users/emre/Desktop/Emare/emaresetup` |
-| 7 | **EmareHup** | 🧠 | Development | Infrastructure | Python, Node.js, Gemini, Copilot, LangGraph | `/Users/emre/Desktop/Emare/EmareHup` |
-| 8 | **Emarebot** | 🛍️ | Production | Automation | Python 3.12, Tkinter, Trendyol API, Gemini AI | `/Users/emre/Desktop/trendyol_bot_kozmo` |
-| 9 | **ZeusDB / EmareOracle** | 🗄️ | Development | Core Engine | C (C11), B+Tree, WAL, ACID, pthread | `/Users/emre/Desktop/oracle` |
-| 10 | **SiberEmare** | 🛡️ | Development | Security | Python 3.11, LangGraph, Claude 3.5, GPT-4o, Neo4j | `/Users/emre/Desktop/SiberEmare` |
-| 11 | **Emare Log** | 📡 | Development | SaaS Platform | Laravel 12, PHP 8.2, Bootstrap 5, Chart.js, DataTables | `/Users/emre/Desktop/Emare/Emare Log/logmanager` |
-| 12 | **Emare Makale** | 📝 | Production | Tool | Python 3.9, Flask 3.0, SQLite, OpenAI gpt-4o | `/Users/emre/Desktop/makale` |
-| 13 | **Hive Coordinator** | 👥 | Ready | Infrastructure | Python 3.11, FastAPI, PostgreSQL 16, Redis 7, Celery | `/Users/emre/Desktop/yazılım ekibi/koordinasyon-sistemi` |
-| 14 | **Emare Team** | 🏢 | Production | Tool | Flask, SQLite, Vanilla JS, Tailwind CSS | `/Users/emre/Desktop/ekip-yonetici` |
-| 15 | **Emare Katip** | 📋 | Ready | Tool | Python, Flask, pytest, GitPython | `/Users/emre/Desktop/Emare/emarekatip` |
-| 16 | **Emare Ulak** | 🔌 | Development | Tool | Node.js, Express.js, WebSocket, SQLite, Chrome Extension | `/Users/emre/Desktop/Emare/emareulak` |
-| 17 | **Emare Ads** | 📢 | Development | Tool | TypeScript, React, Chrome Extension API, FastAPI | `/Users/emre/Desktop/Emare/emareads` |
-| 18 | **Emare AI** | 🤖 | Development | Core Engine | PyTorch, LLaMA/Mistral, FastAPI, vLLM/Ollama | `/Users/emre/Desktop/Emare/emareai` |
-| 19 | **Emare OS** | 🖥️ | Development | Core Engine | Rust, QEMU, NeuroKernel, Bare Metal | `/Users/emre/Desktop/Emare/Emare os` |
-| 20 | **Emare Code** | 💻 | Production | Tool | Python, FastAPI, Multi-AI, Jinja2, SQLite | `/Users/emre/Desktop/Emare/emare code` |
-| 21 | **Emare CC** | ☎️ | Development | SaaS Platform | Node.js, Asterisk, PostgreSQL, React, Docker | `/Users/emre/Desktop/Emare/emarecc` |
+| # | Proje | İkon | Durum | Faz | %  | Kategori | Teknoloji |
+|---|-------|------|-------|-----|----|----------|-----------|
+| 1 | **Emare Asistan** | 🤖 | Production | production | 90% | SaaS Platform | FastAPI, Python, Gemini AI, WhatsApp Bridge |
+| 2 | **EmareCloud** | ☁️ | Production | production | 80% | Infrastructure | Flask, Python, SQLite, SocketIO, Paramiko |
+| 3 | **Emare Finance** | 💰 | Production | production | 80% | SaaS Platform | Laravel 12, PHP 8.4, MariaDB, Tailwind CSS |
+| 4 | **Emare POS / Adisyon** | 🍽️ | Development | mvp | 35% | POS | Laravel 12, PHP 8.2, SQLite, Alpine.js |
+| 5 | **EmareDesk** | 🖥️ | Ready | beta | 65% | Tool | Python, WebSocket, Pillow, mss |
+| 6 | **EmareSetup** | 🏭 | Development | scaffold | 17% | Infrastructure | Python, FastAPI, React 19, Gemini |
+| 7 | **EmareHup** | 🧠 | Development | scaffold | 14% | Infrastructure | Python, Node.js, Gemini, Copilot, LangGraph |
+| 8 | **Emarebot** | 🛍️ | Production | production | 70% | Automation | Python 3.12, Tkinter, Trendyol API, Gemini AI |
+| 9 | **ZeusDB / EmareOracle** | 🗄️ | Development | scaffold | 12% | Core Engine | C (C11), B+Tree, WAL, ACID |
+| 10 | **SiberEmare** | 🛡️ | Development | scaffold | 19% | Security | Python 3.11, LangGraph, Claude 3.5, GPT-4o |
+| 11 | **Emare Log** | 📡 | Development | scaffold | 14% | SaaS Platform | Laravel 12, PHP 8.2, Bootstrap 5, Chart.js |
+| 12 | **Emare Makale** | 📝 | Production | production | 70% | Tool | Python 3.9, Flask 3.0, SQLite, OpenAI gpt-4o |
+| 13 | **Hive Coordinator** | 👥 | Ready | beta | 75% | Infrastructure | Python 3.11, FastAPI, PostgreSQL 16, Redis 7 |
+| 14 | **Emare Team** | 🏢 | Production | production | 70% | Tool | Flask, SQLite, Vanilla JS, Tailwind CSS |
+| 15 | **Emare Katip** | 📋 | Ready | beta | 65% | Tool | Python, Flask, pytest, GitPython |
+| 16 | **Emare Ulak** | 🔌 | Development | scaffold | 17% | Tool | Node.js, Express.js, WebSocket, SQLite |
+| 17 | **Emare Ads** | 📢 | Development | scaffold | 17% | Tool | TypeScript, React, Chrome Extension API, FastAPI |
+| 18 | **Emare AI** | 🤖 | Development | scaffold | 19% | Core Engine | PyTorch, LLaMA/Mistral, FastAPI, vLLM/Ollama |
+| 19 | **Emare OS** | 🖥️ | Development | scaffold | 27% | Core Engine | Rust, QEMU, NeuroKernel, Bare Metal |
+| 20 | **Emare Code** | 💻 | Production | production | 70% | Tool | Python, FastAPI, Multi-AI, Jinja2, SQLite |
+| 21 | **Emare CC** | ☎️ | Development | scaffold | 30% | SaaS Platform | Node.js, Asterisk, PostgreSQL, React, Docker |
+| 22 | **Emare VS Code Asistan** | 🔮 | Development | scaffold | 14% | Tool | Python, Rich, Watchdog |
+| 23 | **Emare Flow** | 🔄 | Development | scaffold | 27% | Automation | React 19, React Flow v12, FastAPI, Python |
+| 24 | **Emare SuperApp** | 📱 | Development | mvp | 37% | Platform | FastAPI, Python, SQLAlchemy, SQLite |
+| 25 | **EmareFree** | 🆓 | Development | scaffold | 10% | Research Tool | Python, requests, BeautifulSoup, pydantic |
+| 26 | **Emare Appliance Desk** | 🔧 | Development | scaffold | 30% | SaaS Platform | PHP 8.2, Laravel 12, Laravel Breeze, Vite |
+| 27 | **Emare Flux** | ⚡ | Planning | idea | 10% | Automation | — |
+| 28 | **Emare GitHub** | 🐙 | Ready | beta | 65% | Tool | Python 3, subprocess, GitHub REST API |
+| 29 | **Emare Google** | 🔍 | Development | scaffold | 19% | Automation | Node.js, Playwright, WebKit |
+| 30 | **Emare IDI** | 🔐 | Planning | scaffold | 10% | Security | — |
+| 31 | **Emare Sebil** | 🚰 | Planning | idea | 10% | Platform | — |
+| 32 | **Emare Tedarik** | 📦 | Planning | scaffold | 10% | SaaS Platform | — |
+| 33 | **Emare Dashboard** | 📊 | Production | production | 70% | Infrastructure | Python 3, Flask, Jinja2, HTML/CSS |
+| 34 | **Girhup** | 🌐 | Planning | idea | 0% | Tool | — |
+| 35 | **Sosyal Medya Yönetim Aracı** | 📣 | Development | scaffold | 33% | Tool | FastAPI, Python, Next.js, React |
+| 36 | **Emare Hosting** | 🏠 | Development | scaffold | 17% | Infrastructure | Python |
+| 37 | **Emare Intranet** | 🏢 | Development | scaffold | 20% | Platform | Flask, Python, Jinja2, SQLite |
+| 38 | **Emare Crypto** | 💎 | Development | scaffold | 25% | Platform | FastAPI, Python, SQLAlchemy, SQLite |
+| 39 | **Emare Pazar** | 🛒 | Development | scaffold | 24% | SaaS Platform | FastAPI, Python, React, Next.js |
+| 40 | **Emare AI Music** | 🎵 | Development | scaffold | 25% | Platform | FastAPI, Python, SQLAlchemy, SQLite |
+| 41 | **Emare Token** | 🪙 | Development | scaffold | 27% | Core Engine | Python, pytest |
+| 42 | **Emare API** | 🔗 | Development | scaffold | 24% | Core Engine | Python |
+| 43 | **Emare webdizayn** | 🎨 | Development | scaffold | 23% | Platform | FastAPI, Python, React, Next.js |
 
-### Durum Açıklamaları
-- **Production** → Canlıda çalışıyor, gerçek kullanıcı var (7 proje)
-- **Development** → Aktif geliştirme aşamasında (11 proje)
-- **Ready** → Tamamlandı, deploy bekleniyor (3 proje)
+### Faz Açıklamaları
+- **production** → Canlıda çalışıyor, gerçek kullanıcı var (8 proje)
+- **beta** → Tamamlandı, deploy bekleniyor veya son test (4 proje)
+- **mvp** → Çalışır prototip mevcut (2 proje)
+- **scaffold** → Temel yapı kurulmuş, geliştirme devam ediyor (26 proje)
+- **idea** → Fikir/planlama aşamasında (3 proje)
 
-**Toplam:** 21 proje
+### Durum Dağılımı (6 Mart 2026)
+- 🟢 **Production:** 8 proje — Ortalama %76 tamamlanma
+- 🔵 **Beta:** 4 proje — Ortalama %68 tamamlanma
+- 🟡 **MVP:** 2 proje — Ortalama %36 tamamlanma
+- 🟠 **Scaffold:** 26 proje — Ortalama %21 tamamlanma
+- ⚪ **Idea:** 3 proje — Ortalama %7 tamamlanma
+- **Ekosistem ortalaması:** %36 tamamlanma, 66/100 sağlık skoru
+
+**Toplam:** 43 proje | **Son tarama:** 6 Mart 2026
 
 ---
 
@@ -239,6 +271,34 @@ Konteyner → EmareCloud sunucusu için Docker Compose
 Reverse Proxy → Nginx (EmareCloud, Finance)
 Süreç Yönetimi → Supervisor (EmareCloud)
 ```
+
+### CI/CD — Webhook Otomatik Deploy (6 Mart 2026)
+
+**45/45 GitHub reposuna push webhook eklendi.**
+
+| Ayar | Değer |
+|------|-------|
+| **Webhook URL** | `https://emarecloud.tr/api/deploy/webhook/emare-deploy-secret-2025` |
+| **Tetikleyici** | `push` event (her commit/merge) |
+| **Hedef** | EmareCloud paneli → otomatik deploy pipeline |
+| **Kuran** | Emare GitHub dervişi (`setup_webhooks.py`) |
+
+#### Auto-Deploy Projeler (9 proje)
+Push yapıldığında **otomatik deploy** tetiklenen projeler:
+
+| Proje | ID |
+|-------|----|
+| Emare Asistan | `emare-asistan` |
+| EmareCloud | `emarecloud` |
+| Emare Finance | `emare-finance` |
+| Emare POS | `emare-pos` |
+| Emare AI | `emareai` |
+| Emare Intranet | `emareintranet` |
+| Emare Pazar | `emarepazar` |
+| Emare API | `emareapi` |
+| Emare webdizayn | `emarewebdizayn` |
+
+> Diğer 34 proje: Webhook tetiklenir ama deploy **manuel onay** gerektirir.
 
 ### Loglama
 - Python → `logging` + dosyaya yaz
